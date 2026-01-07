@@ -1,0 +1,10 @@
+customtkinter
+ollama
+tavily-python
+python-dotenv
+json
+os
+glob
+re
+threading
+tkinter
