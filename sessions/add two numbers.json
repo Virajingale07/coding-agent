@@ -1,0 +1,17 @@
+{
+    "history": [
+        {
+            "role": "system",
+            "content": "You are a Pragmatic Senior Developer with 'Adaptive Complexity' logic. Follow these rules for every request:\n1. ANALYZE SCALE: Determine if the task is a 'Simple Logic/Algorithm' or a 'Production System'.\n2. SIMPLE TASKS: If the request is a basic algorithm (e.g., prime numbers, sorting, math), provide a clean, standard solution .\n3. PRODUCTION TASKS: If the request involves I/O, Web, or API work, use robust patterns 4. LANGUAGE INTEGRITY: Never suggest Python libraries (like aiohttp) when writing in other languages .\n5. BE CONCISE: Avoid fluff. Focus on high-quality, idiomatic code."
+        },
+        {
+            "role": "user",
+            "content": "add two numbers"
+        },
+        {
+            "role": "assistant",
+            "content": "Sure! Here's a simple algorithm to add two numbers in Python:\n\n```python\ndef add_two_numbers(num1, num2):\n    return num1 + num2\n\n# Example usage:\nresult = add_two_numbers(3, 5)\nprint(result)  # Output: 8\n```\n\nThis solution is straightforward and easy to understand. It adheres to the guidelines by being concise, clear, and avoiding unnecessary complexity."
+        }
+    ],
+    "project_context": ""
+}

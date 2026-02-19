@@ -71,8 +71,9 @@ class PragmaticCodingAgent(ctk.CTk):
 
         self.chat_display.bind("<Button-3>", self.show_copy_menu)
         self.refresh_session_sidebar()
-        # 1. Define the code style in your Text widget setup
-        self.chat_display.tag_config("code_bg", background="#2d2d2d", foreground="#d1d5da")
+
+        self.chat_display.tag_config("code_block",  foreground="#f72585")
+
 
     def show_copy_menu(self, event):
         """Right-click menu that works on disabled text boxes."""
@@ -239,26 +240,28 @@ class PragmaticCodingAgent(ctk.CTk):
         self.status_label.configure(text=f"SYSTEM STATUS: WRAP {status}", text_color="#4cc9f0")
 
 
-
-    def highlight_code_blocks(self, text):
-        """Scan text for triple backticks and apply the code_bg tag."""
+    def highlight_code(self, full_text):
+        """Finds content between triple backticks and applies the tag."""
         self.chat_display.configure(state="normal")
-        
-        # Regex to find content between triple backticks
-        # Matches ```[optional_language]\n[code_content]\n```
+
+        # Regex to find everything between triple backticks
+        # matches: ```language\n[code]\n```
         pattern = r"```(?:\w+)?\n(.*?)\n```"
-        matches = re.finditer(pattern, text, re.DOTALL)
-        
+        matches = re.finditer(pattern, full_text, re.DOTALL)
+
         for match in matches:
-            code_text = match.group(1)
-            # Find the starting index of this specific code string in the widget
-            start_index = self.chat_display.search(code_text, "1.0", "end")
+            code_content = match.group(1)
+            # Find where this specific text is in the actual textbox
+            start_index = self.chat_display.search(code_content, "1.0", tk.END)
             if start_index:
-                # Calculate the end index based on character length
-                end_index = f"{start_index} + {len(code_text)} chars"
-                self.chat_display.tag_add("code_bg", start_index, end_index)
-                
+                # Calculate the end by adding the character count
+                end_index = f"{start_index} + {len(code_content)} chars"
+                self.chat_display.tag_add("code_block", start_index, end_index)
+
         self.chat_display.configure(state="disabled")
+
+    # Inside your generation_thread, after full_text is complete:
+        self.after(50, lambda: self.highlight_code(full_text))
 
 if __name__ == "__main__":
     app = PragmaticCodingAgent()
