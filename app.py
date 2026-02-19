@@ -71,6 +71,8 @@ class PragmaticCodingAgent(ctk.CTk):
 
         self.chat_display.bind("<Button-3>", self.show_copy_menu)
         self.refresh_session_sidebar()
+        # 1. Define the code style in your Text widget setup
+        self.chat_display.tag_config("code_bg", background="#2d2d2d", foreground="#d1d5da")
 
     def show_copy_menu(self, event):
         """Right-click menu that works on disabled text boxes."""
@@ -235,6 +237,28 @@ class PragmaticCodingAgent(ctk.CTk):
         # Update status label to confirm the change
         status = "ON" if new_wrap == "word" else "OFF (Horizontal Scroll)"
         self.status_label.configure(text=f"SYSTEM STATUS: WRAP {status}", text_color="#4cc9f0")
+
+
+
+    def highlight_code_blocks(self, text):
+        """Scan text for triple backticks and apply the code_bg tag."""
+        self.chat_display.configure(state="normal")
+        
+        # Regex to find content between triple backticks
+        # Matches ```[optional_language]\n[code_content]\n```
+        pattern = r"```(?:\w+)?\n(.*?)\n```"
+        matches = re.finditer(pattern, text, re.DOTALL)
+        
+        for match in matches:
+            code_text = match.group(1)
+            # Find the starting index of this specific code string in the widget
+            start_index = self.chat_display.search(code_text, "1.0", "end")
+            if start_index:
+                # Calculate the end index based on character length
+                end_index = f"{start_index} + {len(code_text)} chars"
+                self.chat_display.tag_add("code_bg", start_index, end_index)
+                
+        self.chat_display.configure(state="disabled")
 
 if __name__ == "__main__":
     app = PragmaticCodingAgent()
