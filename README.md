@@ -33,11 +33,13 @@ Bash
 git clone [https://github.com/YOUR_USERNAME/coding-agent.git](https://github.com/YOUR_USERNAME/coding-agent.git)
 cd coding-agent
 pip install -r requirements.txt
+
 3. Usage
 Run the application:
 
 Bash
 python app.py
+
 🏗️ System Architecture
 The agent follows a concurrency-first approach to handle local AI processing:
 
