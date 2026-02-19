@@ -33,6 +33,12 @@ class PragmaticCodingAgent(ctk.CTk):
         self.session_list_container = ctk.CTkScrollableFrame(self.sidebar_frame, fg_color="transparent")
         self.session_list_container.pack(fill="both", expand=True, padx=5)
 
+        self.wrap_var = ctk.StringVar(value="word")  # Default to word wrap
+        self.wrap_switch = ctk.CTkSwitch(self.sidebar_frame, text="Word Wrap",
+                                         command=self.toggle_word_wrap,
+                                         variable=self.wrap_var, onvalue="word", offvalue="none")
+        self.wrap_switch.pack(pady=10, padx=20)
+
         # --- MAIN CHAT PANEL ---
         self.chat_frame = ctk.CTkFrame(self, corner_radius=0, fg_color="#1e1e1e")
         self.chat_frame.pack(side="right", fill="both", expand=True)
@@ -221,6 +227,14 @@ class PragmaticCodingAgent(ctk.CTk):
         self.chat_display.insert("end", f"\nError: {e}\n", "system_tag")
         self.chat_display.configure(state="disabled")
 
+    def toggle_word_wrap(self):
+        """Updates the wrapping mode of the chat display."""
+        new_wrap = self.wrap_var.get()
+        self.chat_display.configure(wrap=new_wrap)
+
+        # Update status label to confirm the change
+        status = "ON" if new_wrap == "word" else "OFF (Horizontal Scroll)"
+        self.status_label.configure(text=f"SYSTEM STATUS: WRAP {status}", text_color="#4cc9f0")
 
 if __name__ == "__main__":
     app = PragmaticCodingAgent()
